@@ -76,7 +76,30 @@ Circuit Breaker (Not implemented)
 Gateway / Ingress
 Deploy / Pipeline
 Autoscale (HPA)
-Zero-downtime deploy (Readiness probe)
+
+
+9. Zero-downtime deploy (Readiness probe)
+- seige 로 배포작업 직전에 워크로드를 모니터링 함.
+![image](https://user-images.githubusercontent.com/121846555/223623164-401cb0c6-83e6-4775-ae04-22be46a768ea.png)
+
+-	Readiness probe 적용 전
+
+    ![image](https://user-images.githubusercontent.com/121846555/223623199-4515f93f-1f1d-4f88-921e-74849aba60da.png)
+
+    : Availability가 100% 미만으로 떨어졌으므로 정지시간이 발생한 것이 확인됨.
+
+-	Readiness probe 설정 (deployment.yaml)
+
+    ![image](https://user-images.githubusercontent.com/121846555/223623216-b85b9343-3a6d-4b1d-868c-b78d1fc141a9.png)
+
+- 수정된 주문 서비스 배포
+![image](https://user-images.githubusercontent.com/121846555/223623236-8d8d7821-62e6-400f-8e22-c718bcd383d3.png)
+
+    ![image](https://user-images.githubusercontent.com/121846555/223623251-aa3d4763-3926-4fbf-8b33-5a49b36b982a.png) 
+
+    : 배포기간 동안 Availability의 변화가 없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
+    
+    
 Persistence Volume/ConfigMap/Secret
 
 ## Persistence Volume/ConfigMap/Secret  
@@ -178,19 +201,3 @@ spec:
 
 
 Loggregation / Monitoring
-13. Loggregation / Monitoring
-- 로그를 모니터링하기위해 Kibana 설치하여 LoadBalancer 타입 확인.
-  ![image](https://user-images.githubusercontent.com/121846555/223625288-ed056165-1e71-42ad-a18f-f336f5e6aacd.png)
-
-- 접속 주소: 
-  http://a92298cab2ac94027be92659f08c9479-2039032239.eu-central-1.elb.amazonaws.com:5601
-
-- Kibana Web Admin의 Analytics > Discover에 접속하여 로그 조회
-  ![image](https://user-images.githubusercontent.com/121846555/223625313-441c7ff1-2303-4a6d-87bc-8f62dd959680.png)
-
-  : 전체 로그가 조회됨.
-
--	‘Add filter’에서 'kubernetes.container_name is order’로 조건을 지정
-  ![image](https://user-images.githubusercontent.com/121846555/223625343-59d8559f-b080-4b48-8b75-c377ae17cca7.png)
-
-  : 지정한 조건의 로그만 조회됨.
